@@ -1,33 +1,17 @@
-[![progress-banner](https://backend.codecrafters.io/progress/redis/ca2dcf78-d901-4597-b50d-718a239d06c5)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+# Redis Server Implementation
 
-This is a starting point for TypeScript solutions to the
-["Build Your Own Redis" Challenge](https://codecrafters.io/challenges/redis).
+This repository has the purpose of implementing a Redis server from scratch using Node.js.
 
-In this challenge, you'll build a toy Redis clone that's capable of handling
-basic commands like `PING`, `SET` and `GET`. Along the way we'll learn about
-event loops, the Redis protocol and more.
+My goal is to level up my knowledge in internet protocols, data structures, and server design by building a Redis-like server that can handle basic commands and operations.
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+And having fun while doing it!
 
-# Passing the first stage
 
-The entry point for your Redis implementation is in `app/main.ts`. Study and
-uncomment the relevant code, and push your changes to pass the first stage:
+## Used Technologies
+- Node.js
+- TypeScript
 
-```sh
-git commit -am "pass 1st stage" # any msg
-git push origin master
-```
+## Steps taken to implement the redis server
 
-That's all!
-
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `bun (1.3)` installed locally
-1. Run `./your_program.sh` to run your Redis server, which is implemented in
-   `app/main.ts`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+1. **Bind to port**: I started by creating a TCP server that listens on a specific port for incoming connections. This allows clients to connect to the server and send commands.
+2. **PING**: I implemented the PING command, which is a simple command that clients can use to check if the server is responsive. The server responds with "PONG" when it receives a PING command.
