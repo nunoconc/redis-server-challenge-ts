@@ -1,4 +1,4 @@
-type RespType = string | number | Array<RespType> | null | Error;
+export type RespType = string | number | Array<RespType> | null | Error;
 type RespParserType = { value: RespType | null, bytesConsumed: number } | null
 
 const CRLF = '\r\n';
