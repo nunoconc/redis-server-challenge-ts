@@ -44,13 +44,23 @@ function echo(connection: net.Socket, [message]: RespType[]) {
     writeBulkString(connection, message);
 }
 
-function set(connection: net.Socket, [key, value]: RespType[]) {
+function set(connection: net.Socket, [key, value, expiryUnit, expiryTime ]: RespType[]) {
     if(typeof key !== 'string' || typeof value !== 'string') {
         throw new Error(`Expected string, got '${typeof key}' or '${typeof value}'`);
     }
 
-    DataStorage.set(key, value);
+    if(!expiryUnit && !expiryTime) {
+        DataStorage.set(key, value);
 
+        writeSimpleString(connection, 'OK');
+        return;
+    }
+
+    if(typeof expiryUnit !== 'string' || typeof expiryTime !== 'string') {
+        throw new Error(`Expected string and number, got '${typeof expiryUnit}' or '${typeof expiryTime}'`);
+    }
+
+    DataStorage.set(key, value, expiryUnit, expiryTime);
     writeSimpleString(connection, 'OK');
 }
 
