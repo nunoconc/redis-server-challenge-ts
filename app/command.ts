@@ -1,7 +1,7 @@
 import type {RespType} from "./resp.ts";
 import * as net from "node:net";
 import DataStorage from "./storage.ts";
-import {writeBulkString, writeSimpleString} from "./writer.ts";
+import {writeBulkString, writeInteger, writeSimpleString} from "./writer.ts";
 
 export default function handleCommand(connection: net.Socket, parsedData: RespType) {
 
@@ -30,6 +30,7 @@ const commandMap: { [key: string]: (connection: net.Socket, args: RespType[]) =>
     'ECHO': echo,
     'SET': set,
     'GET': get,
+    'RPUSH': rpush,
 }
 
 function ping(connection: net.Socket) {
@@ -72,6 +73,19 @@ function get(connection: net.Socket, [key]: RespType[]) {
     const data = DataStorage.get(key);
 
     writeBulkString(connection, data);
+}
+
+function rpush(connection: net.Socket, [key, ...value]: RespType[]) {
+    if(typeof key !== 'string' || !Array.isArray(value)) {
+        throw new Error(`Expected string, got '${typeof key}' or '${typeof value}'`);
+    }
+
+    const list = JSON.parse(DataStorage.get(key) || '[]');
+
+    list.push(...value);
+    DataStorage.set(key, JSON.stringify(list));
+
+    writeInteger(connection, list.length);
 }
 
 
